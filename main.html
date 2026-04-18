@@ -3,20 +3,24 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Щенячий патруль | Приглашение Веры</title>
+  <title>Приглашение на день рождения Веры</title>
   <style>
     :root {
-      --blue-1: #4b97e3;
-      --blue-2: #0f67be;
-      --blue-3: #084e92;
-      --red-1: #e1261c;
-      --gold-1: #f4c448;
+      --bg1: #5aa5eb;
+      --bg2: #1f6fc5;
+      --bg3: #0e4f98;
+
+      --env-blue: #0f67be;
+      --env-blue-dark: #0b4f95;
       --paper: #f7e8cf;
-      --ink: #1a2f4d;
-      --radius-xl: 26px;
-      --radius-lg: 18px;
-      --shadow: 0 20px 35px rgba(0, 0, 0, 0.25);
-      --container: 1060px;
+      --gold: #f4c448;
+      --ink: #173a63;
+      --red: #db1f16;
+
+      --radius-xl: 24px;
+      --radius-lg: 16px;
+      --shadow: 0 16px 32px rgba(0, 0, 0, 0.25);
+      --w: 680px;
     }
 
     * {
@@ -30,510 +34,411 @@
       font-family: "Segoe UI", system-ui, sans-serif;
       color: var(--ink);
       background:
-        radial-gradient(1000px 450px at 15% -5%, rgba(255,255,255,.35), transparent 60%),
-        linear-gradient(145deg, var(--blue-1), var(--blue-2) 55%, var(--blue-3));
-      padding: 16px;
-      overflow-x: hidden;
+        radial-gradient(1000px 400px at 20% -10%, rgba(255,255,255,.3), transparent 60%),
+        linear-gradient(145deg, var(--bg1), var(--bg2) 55%, var(--bg3));
+      padding: 18px 12px 32px;
     }
 
-    .layout {
-      width: min(100%, var(--container));
+    .wrap {
+      width: min(100%, var(--w));
       margin: 0 auto;
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 28px;
-      align-items: center;
-      min-height: calc(100vh - 32px);
-    }
-
-    .envelope-wrap {
-      display: grid;
-      place-items: center;
+      gap: 16px;
+      justify-items: center;
     }
 
     .envelope {
       position: relative;
       width: min(100%, 520px);
-      aspect-ratio: 1.28 / 1;
+      aspect-ratio: 1.35 / 1;
       cursor: pointer;
-      transform-origin: center;
-      transition: transform 280ms ease;
       outline: none;
-    }
-
-    .envelope:hover {
-      transform: translateY(-2px);
+      user-select: none;
     }
 
     .envelope:focus-visible {
-      box-shadow: 0 0 0 4px rgba(244, 196, 72, .6);
-      border-radius: 20px;
+      box-shadow: 0 0 0 4px rgba(244, 196, 72, .55);
+      border-radius: 16px;
     }
 
     .env-back {
       position: absolute;
       inset: 0;
-      background: linear-gradient(145deg, #0f67be, #0a4f95);
-      border-radius: 28px;
+      border-radius: 26px;
+      border: 3px solid var(--gold);
+      background: linear-gradient(145deg, var(--env-blue), var(--env-blue-dark));
       box-shadow: var(--shadow);
       overflow: hidden;
-      border: 3px solid var(--gold-1);
     }
 
     .env-back::before {
       content: "";
       position: absolute;
-      width: 125%;
-      height: 72%;
-      left: -15%;
-      bottom: -35%;
-      background: #0d5ea9;
-      transform: rotate(-12deg);
-      border-radius: 35% 35% 0 0;
+      left: -10%;
+      right: -10%;
+      bottom: -48%;
+      height: 78%;
+      background: #0d5ca7;
+      transform: rotate(-10deg);
+      border-radius: 42% 42% 0 0;
     }
 
     .env-flap {
       position: absolute;
       inset: 0;
       transform-origin: top center;
-      transition: transform 520ms cubic-bezier(.2,.8,.2,1);
-      z-index: 4;
+      transition: transform .55s cubic-bezier(.2,.8,.2,1);
+      z-index: 3;
       pointer-events: none;
     }
 
     .env-flap::before {
       content: "";
       position: absolute;
-      left: 0;
-      right: 0;
-      top: 0;
-      margin: 0 auto;
-      width: 100%;
+      inset: 0;
       height: 62%;
-      background:
-        radial-gradient(circle at 50% 20%, rgba(255,255,255,.35), transparent 38%),
-        linear-gradient(145deg, #f8e7c9, #e8d2ad);
+      background: linear-gradient(145deg, #f8e7c9, #e7d2ac);
       clip-path: polygon(0 0, 100% 0, 50% 84%);
-      border-top-left-radius: 26px;
-      border-top-right-radius: 26px;
-      border: 2px solid #ddc39a;
+      border-top-left-radius: 24px;
+      border-top-right-radius: 24px;
+      border: 2px solid #dcc39a;
       border-bottom: none;
     }
 
     .env-flap::after {
       content: "🐾";
       position: absolute;
-      top: 31%;
       left: 50%;
+      top: 31%;
       transform: translate(-50%, -50%);
-      font-size: 34px;
-      filter: drop-shadow(0 3px 3px rgba(0,0,0,.2));
+      font-size: 32px;
+      filter: drop-shadow(0 2px 3px rgba(0,0,0,.25));
     }
 
-    .card {
-      position: absolute;
-      left: 5.8%;
-      right: 5.8%;
-      top: 7%;
-      bottom: 8%;
-      border-radius: var(--radius-xl);
+    .hint {
+      font-size: 13px;
+      font-weight: 700;
+      color: #8d4a06;
+      background: #fff3c9;
+      border: 1px solid #e7be58;
+      border-radius: 999px;
+      padding: 7px 14px;
+      box-shadow: 0 8px 14px rgba(0,0,0,.15);
+      transition: opacity .2s ease;
+      text-align: center;
+    }
+
+    /* Полное письмо отдельным блоком, не внутри конверта */
+    .letter {
+      width: min(100%, 620px);
       background: var(--paper);
-      border: 3px solid #f8d894;
-      box-shadow: 0 16px 28px rgba(0,0,0,.20);
-      padding: 18px 16px 14px;
-      z-index: 2;
+      border: 3px solid #f7d894;
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow);
+      padding: 18px 14px 16px;
       opacity: 0;
-      transform: translateY(24px) scale(.96);
-      transition: transform 500ms cubic-bezier(.2,.8,.2,1), opacity 320ms ease;
-      overflow: auto;
+      transform: translateY(-12px) scale(.98);
+      max-height: 0;
+      overflow: hidden;
+      transition: opacity .35s ease, transform .35s ease, max-height .45s ease;
     }
 
-    .envelope.open .card {
+    .open .env-flap {
+      transform: rotateX(180deg);
+    }
+
+    .open + .hint {
+      opacity: 0;
+    }
+
+    .letter.show {
       opacity: 1;
-      transform: translateY(-16px) scale(1);
-    }
-
-    .envelope.open .env-flap {
-      transform: rotateX(178deg);
+      transform: translateY(0) scale(1);
+      max-height: 1200px; /* достаточная высота для полного текста */
     }
 
     .chip {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
+      display: block;
+      width: max-content;
+      margin: 0 auto 10px;
+      padding: 4px 12px;
       border-radius: 999px;
       background: #fbe8b1;
       border: 1px solid #efc455;
-      color: #7d4309;
-      font-weight: 700;
+      color: #7b4207;
       font-size: 12px;
-      padding: 4px 12px;
-      margin: 0 auto 8px;
+      font-weight: 700;
     }
 
-    .card h1 {
+    h1 {
       text-align: center;
-      font-size: clamp(28px, 4.1vw, 38px);
-      line-height: 1.02;
-      color: #d31f12;
-      text-transform: uppercase;
-      margin-bottom: 3px;
+      color: var(--red);
+      font-size: clamp(34px, 6vw, 58px);
+      line-height: 1;
       letter-spacing: .2px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
       font-weight: 900;
     }
 
-    .card .subtitle {
+    .subtitle {
       text-align: center;
-      color: #164980;
-      font-weight: 800;
-      font-size: clamp(18px, 2.8vw, 24px);
-      margin-bottom: 8px;
-      text-transform: uppercase;
-    }
-
-    .hero {
-      text-align: center;
-      margin-bottom: 8px;
-    }
-
-    .hero .name {
-      font-size: clamp(30px, 4.5vw, 46px);
+      color: #145191;
       font-weight: 900;
-      color: #115ca5;
       text-transform: uppercase;
-      letter-spacing: .3px;
-      margin-bottom: 4px;
+      font-size: clamp(28px, 4.5vw, 40px);
+      line-height: 1.05;
+      margin-bottom: 10px;
     }
 
-    .hero .age {
-      display: inline-block;
+    .name {
+      text-align: center;
+      color: #135da8;
+      text-transform: uppercase;
+      font-size: clamp(40px, 7vw, 72px);
+      line-height: 1;
+      font-weight: 900;
+      margin-bottom: 8px;
+    }
+
+    .age {
+      width: max-content;
+      margin: 0 auto 12px;
       background: linear-gradient(145deg, #ef3024, #cb1f13);
       color: #fff;
       border: 3px solid #fff;
       border-radius: 14px;
-      min-width: 136px;
-      padding: 6px 14px;
-      box-shadow: 0 8px 14px rgba(203,31,19,.26);
-      font-size: 30px;
-      font-weight: 900;
+      min-width: 160px;
+      padding: 8px 16px;
+      font-size: clamp(34px, 5.3vw, 46px);
       line-height: 1;
-    }
-
-    .hero .age small {
-      font-size: 14px;
-      font-weight: 700;
-      margin-left: 4px;
-      opacity: .95;
-    }
-
-    .paw-strip {
-      margin: 10px 0 12px;
+      font-weight: 900;
+      box-shadow: 0 8px 14px rgba(203,31,19,.24);
       text-align: center;
-      font-size: 17px;
-      letter-spacing: 7px;
-      color: #1a67b6;
+    }
+
+    .age small {
+      font-size: .45em;
+      margin-left: 6px;
+      font-weight: 700;
+    }
+
+    .paws {
+      text-align: center;
+      color: #27476d;
+      letter-spacing: 8px;
+      margin-bottom: 12px;
       user-select: none;
     }
 
     .details {
-      background: #ffffffc7;
-      border: 2px solid #e8c989;
+      background: #fffdf8c4;
+      border: 2px solid #e4c486;
       border-radius: var(--radius-lg);
-      padding: 10px 12px;
+      padding: 12px;
       display: grid;
-      gap: 7px;
+      gap: 8px;
       margin-bottom: 10px;
     }
 
     .details p {
-      font-size: clamp(15px, 2.2vw, 18px);
+      font-size: clamp(17px, 2.5vw, 24px);
       line-height: 1.3;
+      font-weight: 700;
       display: flex;
-      gap: 8px;
-      align-items: flex-start;
       flex-wrap: wrap;
-      font-weight: 600;
+      gap: 8px;
     }
 
     .message {
       background: #f8eedb;
-      border-radius: 15px;
-      border: 1px dashed #e0b257;
-      padding: 10px;
+      border: 1px dashed #ddb45e;
+      border-radius: 14px;
+      padding: 10px 12px;
       text-align: center;
-      font-size: clamp(15px, 2vw, 17px);
-      line-height: 1.34;
+      font-size: clamp(16px, 2.2vw, 22px);
+      line-height: 1.35;
       margin-bottom: 10px;
     }
 
     .sign {
       text-align: center;
-      font-size: clamp(14px, 1.9vw, 16px);
+      color: #0a4b8d;
       font-weight: 700;
+      font-size: clamp(16px, 2vw, 21px);
       margin-bottom: 12px;
-      color: #0a4d90;
     }
 
     .actions {
       display: flex;
       justify-content: center;
-      gap: 9px;
-      flex-wrap: wrap;
     }
 
-    button {
+    .btn {
       border: none;
-      cursor: pointer;
       border-radius: 999px;
-      padding: 10px 18px;
-      font-size: 15px;
+      cursor: pointer;
+      padding: 11px 20px;
+      font-size: 16px;
       font-weight: 700;
-      transition: transform .2s ease, filter .2s ease;
+      background: var(--gold);
+      color: #2b2b2b;
+      transition: transform .15s ease, filter .15s ease;
     }
 
-    button:hover {
+    .btn:hover {
       transform: translateY(-1px);
       filter: brightness(1.03);
     }
 
-    .close-btn {
-      background: var(--gold-1);
-      color: #2b2b2b;
-    }
-
-    .hint {
-      position: absolute;
-      left: 50%;
-      bottom: -54px;
-      transform: translateX(-50%);
-      background: #fff3ca;
-      color: #8e4d0a;
-      border: 1px solid #e9be57;
-      border-radius: 999px;
-      padding: 7px 14px;
-      font-size: 13px;
-      font-weight: 700;
-      box-shadow: 0 8px 14px rgba(0,0,0,.14);
-      transition: opacity .25s ease;
-      white-space: nowrap;
-    }
-
-    .panel {
-      background: rgba(255,255,255,.14);
-      border: 1px solid rgba(255,255,255,.22);
-      border-radius: 18px;
-      padding: 14px;
-      box-shadow: var(--shadow);
-    }
-
-    .panel h2 {
-      color: #fff8d4;
-      font-size: clamp(20px, 2.5vw, 28px);
-      margin-bottom: 8px;
-      line-height: 1.1;
-    }
-
-    .panel p {
-      color: #f2f7ff;
-      font-size: clamp(15px, 1.9vw, 18px);
-      line-height: 1.42;
-      margin-bottom: 8px;
-    }
-
-    .panel p:last-child {
-      margin-bottom: 0;
-    }
-
-    .floating-paw {
+    .paw-fx {
       position: fixed;
-      inset: auto auto 22px 50%;
-      transform: translateX(-50%);
       font-size: 24px;
       pointer-events: none;
       opacity: 0;
       z-index: 50;
-      animation: pawUp 900ms ease forwards;
+      animation: pawUp .9s ease forwards;
     }
 
     @keyframes pawUp {
-      0% { transform: translate(-50%, 0) scale(.7); opacity: 1; }
-      100% { transform: translate(-50%, -120px) scale(1.2); opacity: 0; }
+      0% { transform: translateY(0) scale(.7); opacity: 1; }
+      100% { transform: translateY(-120px) scale(1.15); opacity: 0; }
     }
 
-    @media (max-width: 940px) {
-      .layout {
-        grid-template-columns: 1fr;
-        align-items: start;
-        gap: 18px;
-        padding-top: 8px;
-      }
-
-      .panel {
-        order: -1;
-      }
-
-      .envelope {
-        width: min(100%, 640px);
-      }
-    }
-
-    @media (max-width: 560px) {
+    @media (max-width: 760px) {
       body {
-        padding: 10px;
+        padding: 12px 8px 24px;
       }
 
       .envelope {
-        width: 100%;
-        max-width: 390px;
+        width: min(100%, 430px);
       }
 
-      .card {
-        left: 4.2%;
-        right: 4.2%;
-        top: 6%;
-        bottom: 7%;
-        padding: 14px 11px 12px;
+      .letter {
+        width: min(100%, 430px);
       }
 
-      .hero .age {
-        font-size: 26px;
+      .details p {
+        font-size: clamp(15px, 4.2vw, 19px);
       }
 
-      .paw-strip {
-        letter-spacing: 5px;
-      }
-
-      .hint {
-        bottom: -48px;
-        font-size: 12px;
+      .message {
+        font-size: clamp(15px, 4.1vw, 18px);
       }
     }
 
     @media (prefers-reduced-motion: reduce) {
       * {
-        animation-duration: 0.001ms !important;
+        animation-duration: .001ms !important;
         animation-iteration-count: 1 !important;
-        transition-duration: 0.001ms !important;
+        transition-duration: .001ms !important;
       }
     }
   </style>
 </head>
 <body>
-  <main class="layout">
-    <section class="envelope-wrap">
-      <div
-        class="envelope"
-        id="envelope"
-        role="button"
-        tabindex="0"
-        aria-expanded="false"
-        aria-label="Открыть приглашение"
-      >
-        <div class="env-back"></div>
-        <div class="env-flap"></div>
+  <main class="wrap">
+    <div
+      id="envelope"
+      class="envelope"
+      role="button"
+      tabindex="0"
+      aria-expanded="false"
+      aria-label="Открыть приглашение"
+    >
+      <div class="env-back"></div>
+      <div class="env-flap"></div>
+    </div>
 
-        <article class="card" id="card">
-          <div class="chip">🐾 Щенячий патруль приглашает 🐾</div>
-          <h1>Приглашение</h1>
-          <div class="subtitle">На день рождения</div>
+    <div id="hint" class="hint">🐾 Нажми на конверт, чтобы открыть письмо</div>
 
-          <div class="hero">
-            <div class="name">Веры</div>
-            <div class="age">4 <small>года</small></div>
-          </div>
+    <section id="letter" class="letter" aria-live="polite">
+      <span class="chip">🐾 Щенячий патруль приглашает 🐾</span>
 
-          <div class="paw-strip">🐾 🐾 🐾 🐾 🐾</div>
+      <h1>Приглашение</h1>
+      <div class="subtitle">На день рождения</div>
+      <div class="name">Веры</div>
+      <div class="age">4 <small>года</small></div>
 
-          <div class="details">
-            <p>📅 <strong>24 августа 2026</strong></p>
-            <p>⏰ <strong>В 18:30</strong></p>
-            <p>📍 Детский центр <strong>"КРАСКИ"</strong>, <strong>СИРИНА 78</strong></p>
-          </div>
+      <div class="paws">🐾 🐾 🐾 🐾 🐾</div>
 
-          <div class="message">
-            Будет много игр, радости и улыбок!<br />
-            Щенки уже готовы к празднику, ждём вас! 🎉
-          </div>
+      <div class="details">
+        <p>📍 Детский центр <strong>"КРАСКИ"</strong></p>
+        <p>📌 Адрес: <strong>СИРИНА 78</strong></p>
+        <p>⏰ Начало: <strong>18:30</strong></p>
+      </div>
 
-          <div class="sign">С любовью, семья Крутилиных 💙</div>
+      <div class="message">
+        Будем рады видеть вас на празднике!<br />
+        Игры, веселье и отличное настроение гарантированы 🎉
+      </div>
 
-          <div class="actions">
-            <button class="close-btn" id="closeBtn" type="button">📬 Закрыть</button>
-          </div>
-        </article>
+      <div class="sign">С любовью, семья Крутилиных 💙</div>
 
-        <div class="hint" id="hint">Нажми на конверт, чтобы открыть</div>
+      <div class="actions">
+        <button id="closeBtn" class="btn" type="button">📬 Закрыть</button>
       </div>
     </section>
-
-    <aside class="panel">
-      <h2>Оформление в стиле "Щенячий патруль"</h2>
-      <p>Сделал полностью адаптивный макет: на десктопе и мобильном письмо остаётся внутри конверта и больше не уезжает вверх.</p>
-      <p>Цвета, лапки, динамика конверта и праздничный стиль выдержаны в тематике. Дресс-код удалён, данные мероприятия обновлены.</p>
-      <p>Если нужно, добавлю блок "Подтвердить присутствие" и кнопку для календаря.</p>
-    </aside>
   </main>
 
   <script>
     (function () {
       const envelope = document.getElementById("envelope");
+      const letter = document.getElementById("letter");
       const closeBtn = document.getElementById("closeBtn");
       const hint = document.getElementById("hint");
-      let isBusy = false;
+      let busy = false;
 
-      function burstPaws() {
-        for (let i = 0; i < 8; i += 1) {
-          const paw = document.createElement("span");
-          paw.className = "floating-paw";
-          paw.textContent = "🐾";
-          paw.style.left = Math.round(Math.random() * window.innerWidth) + "px";
-          paw.style.bottom = (20 + Math.random() * 50) + "px";
-          paw.style.animationDelay = (i * 35) + "ms";
-          paw.style.fontSize = (16 + Math.random() * 16) + "px";
-          document.body.appendChild(paw);
-          setTimeout(() => paw.remove(), 980);
+      function pawsFx() {
+        for (let i = 0; i < 8; i++) {
+          const el = document.createElement("span");
+          el.className = "paw-fx";
+          el.textContent = "🐾";
+          el.style.left = Math.round(Math.random() * window.innerWidth) + "px";
+          el.style.bottom = (18 + Math.random() * 40) + "px";
+          el.style.animationDelay = (i * 35) + "ms";
+          el.style.fontSize = (16 + Math.random() * 16) + "px";
+          document.body.appendChild(el);
+          setTimeout(() => el.remove(), 950);
         }
       }
 
-      function setState(opened) {
+      function setOpen(opened) {
         envelope.classList.toggle("open", opened);
+        letter.classList.toggle("show", opened);
         envelope.setAttribute("aria-expanded", String(opened));
-        if (hint) hint.style.opacity = opened ? "0" : "1";
+        hint.style.opacity = opened ? "0" : "1";
       }
 
       function openEnvelope() {
-        if (isBusy || envelope.classList.contains("open")) return;
-        isBusy = true;
-        setState(true);
+        if (busy || envelope.classList.contains("open")) return;
+        busy = true;
+        setOpen(true);
         setTimeout(() => {
-          burstPaws();
+          pawsFx();
           if (navigator.vibrate) navigator.vibrate(30);
         }, 120);
-        setTimeout(() => { isBusy = false; }, 520);
+        setTimeout(() => { busy = false; }, 520);
       }
 
       function closeEnvelope() {
-        if (isBusy || !envelope.classList.contains("open")) return;
-        isBusy = true;
-        setState(false);
-        setTimeout(() => { isBusy = false; }, 460);
+        if (busy || !envelope.classList.contains("open")) return;
+        busy = true;
+        setOpen(false);
+        setTimeout(() => { busy = false; }, 460);
       }
 
-      function toggle() {
+      function toggleEnvelope() {
         if (envelope.classList.contains("open")) closeEnvelope();
         else openEnvelope();
       }
 
-      envelope.addEventListener("click", (e) => {
-        if (closeBtn.contains(e.target)) return;
-        toggle();
-      });
+      envelope.addEventListener("click", toggleEnvelope);
 
       envelope.addEventListener("keydown", (e) => {
         if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();
-          toggle();
+          toggleEnvelope();
         }
       });
 
