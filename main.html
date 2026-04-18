@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+  <title>Щенячий патруль | Приглашение на День рождения</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(145deg, #89c4f4, #3a7bd5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Segoe UI', 'Quicksand', system-ui, 'Comic Neue', sans-serif;
+      padding: 16px;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Декорации */
+    .decoration {
+      position: fixed;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .paw-print {
+      position: absolute;
+      font-size: clamp(1rem, 5vw, 1.8rem);
+      opacity: 0.3;
+      animation: floatPaw 6s infinite ease-in-out;
+    }
+    @keyframes floatPaw {
+      0% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-12px) rotate(5deg); }
+      100% { transform: translateY(0px) rotate(0deg); }
+    }
+    .cloud {
+      position: absolute;
+      background: rgba(255,255,240,0.4);
+      border-radius: 1000px;
+      filter: blur(8px);
+      width: 70px;
+      height: 35px;
+      animation: drift 18s infinite linear;
+    }
+    @keyframes drift {
+      0% { transform: translateX(-15px); opacity: 0.4; }
+      100% { transform: translateX(15px); opacity: 0.7; }
+    }
+
+    /* Контейнер */
+    .container {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      max-width: 100%;
+      margin: 0 auto;
+    }
+
+    /* КОНВЕРТ */
+    .envelope {
+      position: relative;
+      width: 94%;
+      max-width: 340px;
+      aspect-ratio: 340 / 240;
+      margin: 10px auto;
+      cursor: pointer;
+      perspective: 1200px;
+      transition: transform 0.2s ease;
+      animation: envelopeAppear 0.7s cubic-bezier(0.2, 0.9, 0.4, 1.2) forwards;
+      opacity: 0;
+      transform: scale(0.85) rotate(-2deg);
+    }
+    @keyframes envelopeAppear {
+      0% { opacity: 0; transform: scale(0.85) rotate(-3deg); }
+      40% { opacity: 0.8; transform: scale(1.02) rotate(1deg); }
+      100% { opacity: 1; transform: scale(1) rotate(0deg); }
+    }
+    .envelope:active { transform: scale(0.98); }
+
+    .envelope-body {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, #1e5ab5, #0e3a7a);
+      border-radius: 20px;
+      box-shadow: 0 15px 25px rgba(0,0,0,0.3);
+      z-index: 1;
+      border: 2px solid #ffd966;
+    }
+    .envelope-flap {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(145deg, #f0b429, #e09d1e);
+      clip-path: polygon(0% 0%, 100% 0%, 50% 48%);
+      transform-origin: top;
+      transition: transform 0.55s cubic-bezier(0.23, 1, 0.32, 1);
+      z-index: 3;
+      border-radius: 20px 20px 0 0;
+      backface-visibility: hidden;
+    }
+    .envelope-flap::before {
+      content: "🐾";
+      position: absolute;
+      bottom: 15px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 28px;
+      color: #1e3a5f;
+      opacity: 0.8;
+      text-shadow: 0 1px 2px white;
+    }
+    .envelope-body::after {
+      content: "🐾";
+      position: absolute;
+      bottom: 12px;
+      right: 12px;
+      font-size: 22px;
+      opacity: 0.5;
+      color: #ffd966;
+    }
+
+    /* ПИСЬМО (внутри) */
+    .letter {
+      position: absolute;
+      bottom: 16px;
+      left: 10px;
+      right: 10px;
+      background: #fffef7;
+      border-radius: 24px;
+      padding: 16px 12px;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.25);
+      transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1), opacity 0.35s ease;
+      opacity: 0;
+      transform: translateY(12px) scale(0.94);
+      z-index: 2;
+      pointer-events: none;
+      border: 2px solid #ffcd6b;
+      word-break: break-word;
+      overflow-wrap: break-word;
+    }
+    .envelope.open .letter {
+      opacity: 1;
+      transform: translateY(-30px) scale(1);
+      transition-delay: 0.2s;
+      pointer-events: auto;
+      z-index: 15;
+      box-shadow: 0 25px 40px rgba(0,0,0,0.3);
+    }
+    .envelope.open .envelope-flap {
+      transform: rotateX(180deg);
+      z-index: 2;
+    }
+
+    /* СТИЛИ ПРИГЛАШЕНИЯ — как на примере, но в стиле патруля */
+    .invitation-card {
+      text-align: center;
+      font-family: 'Segoe UI', 'Quicksand', 'Comic Neue', sans-serif;
+      background: #fffaf0;
+      border-radius: 20px;
+      padding: 8px 4px 4px;
+    }
+    .paw-badge {
+      background: #f4d03f;
+      display: inline-block;
+      padding: 4px 14px;
+      border-radius: 40px;
+      font-weight: bold;
+      font-size: 0.75rem;
+      color: #1e3a5f;
+      margin-bottom: 8px;
+      letter-spacing: 1px;
+    }
+    .invitation-card h1 {
+      font-size: 1.9rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, #e67e22, #f39c12);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      margin: 5px 0 2px;
+      line-height: 1.2;
+    }
+    .invitation-card h2 {
+      font-size: 2.2rem;
+      color: #1f618d;
+      margin: 0;
+      letter-spacing: 2px;
+      font-weight: 800;
+      text-shadow: 2px 2px 0 #ffd966;
+    }
+    .age-circle {
+      background: #ffb347;
+      display: inline-block;
+      border-radius: 100px;
+      padding: 6px 18px;
+      margin: 8px 0;
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: white;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    .date-place {
+      background: #eef2fc;
+      border-radius: 28px;
+      padding: 10px 12px;
+      margin: 12px 0;
+      border-left: 6px solid #f39c12;
+      text-align: left;
+    }
+    .date-place p {
+      margin: 6px 0;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: #2c3e50;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .date-place strong {
+      color: #c0392b;
+    }
+    .paw-message {
+      background: #fdebd0;
+      padding: 10px;
+      border-radius: 20px;
+      margin: 12px 0;
+      font-size: 0.85rem;
+      font-style: italic;
+    }
+    .close-btn {
+      background: #f39c12;
+      border: none;
+      padding: 6px 20px;
+      border-radius: 50px;
+      font-size: 0.85rem;
+      font-weight: bold;
+      color: #2c3e50;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: 0.2s;
+      font-family: inherit;
+    }
+    .close-btn:active {
+      transform: scale(0.96);
+      background: #e67e22;
+    }
+    .hint {
+      text-align: center;
+      margin-top: 18px;
+      font-size: 0.85rem;
+      background: rgba(255,245,200,0.9);
+      backdrop-filter: blur(4px);
+      padding: 5px 16px;
+      border-radius: 60px;
+      color: #a44c0e;
+      font-weight: bold;
+      transition: opacity 0.3s;
+      pointer-events: none;
+    }
+    .hint.hide-hint {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    /* Адаптация под мобильные — чтобы текст не резался */
+    @media (max-width: 480px) {
+      .envelope { max-width: 300px; }
+      .envelope.open .letter { transform: translateY(-25px) scale(1); }
+      .invitation-card h1 { font-size: 1.5rem; }
+      .invitation-card h2 { font-size: 1.8rem; }
+      .age-circle { font-size: 1.2rem; padding: 4px 14px; }
+      .date-place p { font-size: 0.8rem; }
+    }
+    @media (max-width: 400px) {
+      .envelope { max-width: 280px; }
+      .envelope.open .letter { transform: translateY(-20px) scale(0.99); }
+      .invitation-card h1 { font-size: 1.3rem; }
+      .invitation-card h2 { font-size: 1.6rem; }
+      .date-place { padding: 8px; }
+    }
+    @media (max-width: 360px) {
+      .envelope.open .letter { transform: translateY(-16px) scale(0.98); }
+      .invitation-card h1 { font-size: 1.2rem; }
+      .invitation-card h2 { font-size: 1.4rem; }
+      .age-circle { font-size: 1rem; }
+      .date-place p { font-size: 0.7rem; }
+      .paw-message { font-size: 0.75rem; }
+    }
+
+    /* Летающие лапки */
+    @keyframes pawFly {
+      0% { transform: scale(0.2) rotate(0deg); opacity: 1; top: 70%; left: 50%; }
+      100% { transform: scale(1.2) rotate(25deg); opacity: 0; top: 5%; left: 85%; }
+    }
+    .floating-paw {
+      position: fixed;
+      pointer-events: none;
+      font-size: 24px;
+      z-index: 100;
+      animation: pawFly 0.9s ease-out forwards;
+    }
+  </style>
+</head>
+<body>
+
+<div class="decoration">
+  <div class="paw-print" style="top: 8%; left: 5%;">🐾</div>
+  <div class="paw-print" style="top: 75%; left: 92%; animation-duration: 7s;">🐾</div>
+  <div class="paw-print" style="top: 40%; left: 87%; animation-duration: 9s;">🐾</div>
+  <div class="paw-print" style="top: 85%; left: 3%;">🐾</div>
+  <div class="cloud" style="top: 15%; left: -10px; width: 80px; height: 40px;"></div>
+  <div class="cloud" style="top: 70%; left: 80%; width: 60px; height: 30px;"></div>
+</div>
+
+<div class="container">
+  <div class="envelope" id="envelope">
+    <div class="envelope-body"></div>
+    <div class="envelope-flap"></div>
+    <div class="letter" id="letter">
+      <div class="invitation-card">
+        <div class="paw-badge">🐾 ЩЕНЯЧИЙ ПАТРУЛЬ 🐾</div>
+        <h1>ПРИГЛАШЕНИЕ</h1>
+        <h2>НА ДЕНЬ РОЖДЕНИЯ</h2>
+        <div style="font-size: 2rem; margin: 5px 0;">🎀 СОФИИ 🎀</div>
+        <div class="age-circle">6 ЛЕТ</div>
+        <div class="date-place">
+          <p>📅 <strong>24 мая 2026 года</strong> &nbsp;|&nbsp; ⏰ <strong>15:00</strong></p>
+          <p>📍 Штаб-квартира: <strong>Семейный парк «Солнечный», беседка «Ромашка»</strong></p>
+          <p>🎽 Дресс-код: элементы Щенячьего патруля <br> (значки, лапки, синий/красный/жёлтый)</p>
+        </div>
+        <div class="paw-message">
+          🎉 Вас ждут: конкурсы от Гонщика, сладости от Маршалла,<br>
+          мыльные пузыри и медаль «Лучший друг»!<br>
+          «Щенки, вперёд!» — подтвердите миссию до <strong>18 мая</strong> по телефону.
+        </div>
+        <p style="margin-top: 6px; font-size: 0.8rem;">🐕 С лапой на сердце, семья Ивановых и Щенячий патруль 🐾</p>
+        <button class="close-btn" id="closeLetterBtn">📬 Закрыть приглашение</button>
+      </div>
+    </div>
+  </div>
+  <div class="hint" id="hintText">🐾 Нажми на конверт, чтобы открыть миссию! 🐾</div>
+</div>
+
+<script>
+  (function() {
+    const envelope = document.getElementById('envelope');
+    const closeBtn = document.getElementById('closeLetterBtn');
+    const hint = document.getElementById('hintText');
+    let isAnimating = false;
+
+    function createFloatingPaws() {
+      for (let i = 0; i < 10; i++) {
+        const paw = document.createElement('div');
+        paw.className = 'floating-paw';
+        paw.innerHTML = '🐾';
+        paw.style.left = Math.random() * window.innerWidth + 'px';
+        paw.style.top = window.innerHeight - 60 + 'px';
+        paw.style.fontSize = (Math.random() * 20 + 16) + 'px';
+        document.body.appendChild(paw);
+        setTimeout(() => paw.remove(), 850);
+      }
+    }
+
+    function gentleScrollToLetter() {
+      const letterEl = document.querySelector('.letter');
+      if (!letterEl) return;
+      setTimeout(() => {
+        const rect = letterEl.getBoundingClientRect();
+        if (rect.top < 30 || rect.bottom > window.innerHeight - 40) {
+          window.scrollTo({ top: window.scrollY + rect.top - 35, behavior: 'smooth' });
+        }
+      }, 260);
+    }
+
+    function openEnvelope() {
+      if (envelope.classList.contains('open') || isAnimating) return;
+      isAnimating = true;
+      envelope.classList.add('open');
+      if (hint) hint.classList.add('hide-hint');
+      setTimeout(() => {
+        createFloatingPaws();
+        if (window.navigator && window.navigator.vibrate) window.navigator.vibrate(30);
+      }, 150);
+      gentleScrollToLetter();
+      setTimeout(() => { isAnimating = false; }, 600);
+    }
+
+    function closeEnvelope() {
+      if (!envelope.classList.contains('open') || isAnimating) return;
+      isAnimating = true;
+      envelope.classList.remove('open');
+      setTimeout(() => { isAnimating = false; }, 500);
+    }
+
+    envelope.addEventListener('click', (e) => {
+      if (e.target === closeBtn || closeBtn.contains(e.target)) return;
+      if (envelope.classList.contains('open')) return;
+      openEnvelope();
+    });
+
+    if (closeBtn) {
+      closeBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        closeEnvelope();
+      });
+    }
+
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      if (envelope.classList.contains('open')) {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(gentleScrollToLetter, 200);
+      }
+    });
+
+    // Приветственный покач
+    setTimeout(() => {
+      if (!envelope.classList.contains('open')) {
+        envelope.style.transform = 'scale(1.01)';
+        setTimeout(() => { if (envelope) envelope.style.transform = ''; }, 400);
+      }
+    }, 200);
+  })();
+</script>
+</body>
+</html>
