@@ -16,7 +16,6 @@
       --paper: #fff6fc;
       --paper-2: #ffeef8;
 
-      --pink: #ff2f8f;
       --pink-dark: #cc1f73;
       --blue: #1c62b7;
       --gold: #f6c95a;
@@ -32,8 +31,9 @@
 
     html, body {
       width: 100%;
-      height: 100%;
-      overflow: hidden; /* без скролла страницы */
+      min-height: 100%;
+      overflow-x: hidden;
+      overflow-y: auto;
     }
 
     body {
@@ -44,7 +44,6 @@
         linear-gradient(160deg, var(--bg1), var(--bg2) 55%, var(--bg3));
     }
 
-    /* Облака */
     .clouds {
       position: fixed;
       inset: 0;
@@ -61,8 +60,7 @@
       animation: cloudFloat linear infinite;
     }
 
-    .cloud::before,
-    .cloud::after {
+    .cloud::before, .cloud::after {
       content: "";
       position: absolute;
       background: inherit;
@@ -95,11 +93,10 @@
 
     .stage {
       position: relative;
-      width: 100%;
-      height: 100%;
+      min-height: 100vh;
       display: grid;
       place-items: center;
-      padding: 10px;
+      padding: 14px 10px 24px;
       z-index: 2;
     }
 
@@ -153,7 +150,6 @@
       border-radius: 42% 42% 0 0;
     }
 
-    /* Крылья */
     .wing {
       position: absolute;
       top: 36%;
@@ -168,8 +164,7 @@
       animation: wingFlap 2.4s ease-in-out infinite;
     }
 
-    .wing::before,
-    .wing::after {
+    .wing::before, .wing::after {
       content: "";
       position: absolute;
       background: inherit;
@@ -193,18 +188,8 @@
       transform: rotate(-8deg);
     }
 
-    .wing.left {
-      left: -58px;
-      transform: rotate(-16deg);
-      border-radius: 75% 30% 60% 45%;
-    }
-
-    .wing.right {
-      right: -58px;
-      transform: scaleX(-1) rotate(-16deg);
-      border-radius: 75% 30% 60% 45%;
-      animation-delay: .2s;
-    }
+    .wing.left { left: -58px; transform: rotate(-16deg); }
+    .wing.right { right: -58px; transform: scaleX(-1) rotate(-16deg); animation-delay: .2s; }
 
     @keyframes wingFlap {
       0%, 100% { transform: rotate(-16deg) translateY(0); }
@@ -243,9 +228,7 @@
       filter: drop-shadow(0 2px 3px rgba(0,0,0,.25));
     }
 
-    .envelope.open .env-flap {
-      transform: rotateX(180deg);
-    }
+    .envelope.open .env-flap { transform: rotateX(180deg); }
 
     .hint {
       position: absolute;
@@ -278,6 +261,9 @@
 
     .letter {
       width: min(92vw, 560px);
+      max-height: min(86vh, 860px);
+      overflow: auto;
+      -webkit-overflow-scrolling: touch;
       background: linear-gradient(180deg, var(--paper), var(--paper-2));
       border: 3px solid #f7c4df;
       border-radius: var(--radius-xl);
@@ -292,7 +278,7 @@
 
     .letter.show {
       opacity: 1;
-      transform: translateY(-18px) scale(var(--fit-scale, 1));
+      transform: translateY(-18px) scale(1);
       pointer-events: auto;
     }
 
@@ -429,10 +415,7 @@
       transition: transform .15s ease, filter .15s ease;
     }
 
-    .btn:hover {
-      transform: translateY(-1px);
-      filter: brightness(1.03);
-    }
+    .btn:hover { transform: translateY(-1px); filter: brightness(1.03); }
 
     .btn-calendar { background: var(--green); color: #fff; }
     .btn-close { background: var(--gold); color: #2b2b2b; }
@@ -455,12 +438,7 @@
       .stack { width: min(96vw, 430px); }
       .hint { bottom: -46px; font-size: 12px; padding: 6px 12px; }
 
-      .wing {
-        width: 64px;
-        height: 88px;
-        top: 39%;
-      }
-
+      .wing { width: 64px; height: 88px; top: 39%; }
       .wing.left { left: -38px; }
       .wing.right { right: -38px; }
 
@@ -570,17 +548,6 @@
         );
       }
 
-      function fitLetterToScreen() {
-        if (!letter.classList.contains("show")) return;
-        letter.style.setProperty("--fit-scale", "1");
-
-        const maxH = window.innerHeight - 24;
-        const h = letter.getBoundingClientRect().height;
-        const scale = Math.min(1, maxH / h);
-
-        letter.style.setProperty("--fit-scale", String(scale));
-      }
-
       function pawsFx() {
         for (let i = 0; i < 8; i++) {
           const el = document.createElement("span");
@@ -600,15 +567,6 @@
         envelope.setAttribute("aria-expanded", String(opened));
         letter.classList.toggle("show", opened);
         hint.classList.toggle("hide", opened);
-
-        if (opened) {
-          requestAnimationFrame(() => {
-            fitLetterToScreen();
-            setTimeout(fitLetterToScreen, 120);
-          });
-        } else {
-          letter.style.setProperty("--fit-scale", "1");
-        }
       }
 
       function openEnvelope() {
@@ -684,9 +642,6 @@
         e.stopPropagation();
         downloadCalendar();
       });
-
-      window.addEventListener("resize", fitLetterToScreen);
-      window.addEventListener("orientationchange", () => setTimeout(fitLetterToScreen, 120));
     })();
   </script>
 </body>
