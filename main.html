@@ -6,15 +6,15 @@
   <title>Приглашение Веры | Скай</title>
   <style>
     :root {
-      --bg1: #ffbfdc;
-      --bg2: #ff8fbd;
-      --bg3: #ff6eac;
+      --bg1: #ffd0e8;
+      --bg2: #ff9dcb;
+      --bg3: #ff7ab8;
 
       --env-main: #ff77b6;
       --env-dark: #e65099;
 
-      --paper: #fff5fb;
-      --paper-2: #ffeaf6;
+      --paper: #fff6fc;
+      --paper-2: #ffeef8;
 
       --pink: #ff2f8f;
       --pink-dark: #cc1f73;
@@ -28,11 +28,7 @@
       --shadow: 0 16px 28px rgba(0, 0, 0, 0.22);
     }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     html, body {
       width: 100%;
@@ -44,8 +40,57 @@
       font-family: "Segoe UI", system-ui, sans-serif;
       color: var(--ink);
       background:
-        radial-gradient(900px 420px at 20% -10%, rgba(255,255,255,.35), transparent 60%),
+        radial-gradient(900px 420px at 20% -10%, rgba(255,255,255,.4), transparent 60%),
         linear-gradient(160deg, var(--bg1), var(--bg2) 55%, var(--bg3));
+    }
+
+    /* Облака */
+    .clouds {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .cloud {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.72);
+      border-radius: 999px;
+      filter: blur(.2px);
+      animation: cloudFloat linear infinite;
+    }
+
+    .cloud::before,
+    .cloud::after {
+      content: "";
+      position: absolute;
+      background: inherit;
+      border-radius: inherit;
+    }
+
+    .cloud::before {
+      width: 55%;
+      height: 95%;
+      left: 12%;
+      top: -38%;
+    }
+
+    .cloud::after {
+      width: 45%;
+      height: 80%;
+      right: 12%;
+      top: -28%;
+    }
+
+    .cloud.c1 { width: 170px; height: 44px; top: 10%; left: -220px; animation-duration: 26s; }
+    .cloud.c2 { width: 120px; height: 34px; top: 24%; left: -200px; animation-duration: 30s; animation-delay: -8s; opacity: .8; }
+    .cloud.c3 { width: 200px; height: 52px; top: 67%; left: -260px; animation-duration: 36s; animation-delay: -16s; opacity: .65; }
+    .cloud.c4 { width: 95px;  height: 28px; top: 82%; left: -160px; animation-duration: 28s; animation-delay: -12s; opacity: .78; }
+
+    @keyframes cloudFloat {
+      from { transform: translateX(0); }
+      to   { transform: translateX(calc(100vw + 420px)); }
     }
 
     .stage {
@@ -55,6 +100,7 @@
       display: grid;
       place-items: center;
       padding: 10px;
+      z-index: 2;
     }
 
     .stack {
@@ -71,7 +117,13 @@
       cursor: pointer;
       outline: none;
       user-select: none;
-      z-index: 2;
+      z-index: 3;
+      animation: gentleBob 3.4s ease-in-out infinite;
+    }
+
+    @keyframes gentleBob {
+      0%, 100% { transform: translateY(0); }
+      50%      { transform: translateY(-4px); }
     }
 
     .envelope:focus-visible {
@@ -99,6 +151,64 @@
       background: #d8428b;
       transform: rotate(-10deg);
       border-radius: 42% 42% 0 0;
+    }
+
+    /* Крылья */
+    .wing {
+      position: absolute;
+      top: 36%;
+      width: 88px;
+      height: 118px;
+      background: linear-gradient(180deg, #fff 0%, #ffeaf7 75%);
+      border: 2px solid #f8cbe4;
+      border-radius: 65% 35% 60% 40%;
+      z-index: 2;
+      box-shadow: 0 8px 16px rgba(0,0,0,.12);
+      transform-origin: center bottom;
+      animation: wingFlap 2.4s ease-in-out infinite;
+    }
+
+    .wing::before,
+    .wing::after {
+      content: "";
+      position: absolute;
+      background: inherit;
+      border: inherit;
+      border-radius: inherit;
+    }
+
+    .wing::before {
+      width: 70%;
+      height: 55%;
+      left: 8%;
+      top: 22%;
+      transform: rotate(12deg);
+    }
+
+    .wing::after {
+      width: 52%;
+      height: 40%;
+      right: 8%;
+      bottom: 8%;
+      transform: rotate(-8deg);
+    }
+
+    .wing.left {
+      left: -58px;
+      transform: rotate(-16deg);
+      border-radius: 75% 30% 60% 45%;
+    }
+
+    .wing.right {
+      right: -58px;
+      transform: scaleX(-1) rotate(-16deg);
+      border-radius: 75% 30% 60% 45%;
+      animation-delay: .2s;
+    }
+
+    @keyframes wingFlap {
+      0%, 100% { transform: rotate(-16deg) translateY(0); }
+      50%      { transform: rotate(-8deg) translateY(-4px); }
     }
 
     .env-flap {
@@ -152,12 +262,10 @@
       box-shadow: 0 8px 14px rgba(0,0,0,.12);
       white-space: nowrap;
       transition: opacity .2s ease;
-      z-index: 3;
+      z-index: 5;
     }
 
-    .hint.hide {
-      opacity: 0;
-    }
+    .hint.hide { opacity: 0; }
 
     .letter-wrap {
       position: absolute;
@@ -248,11 +356,7 @@
       box-shadow: 0 8px 14px rgba(217,33,122,.24);
     }
 
-    .age small {
-      font-size: .45em;
-      margin-left: 6px;
-      font-weight: 700;
-    }
+    .age small { font-size: .45em; margin-left: 6px; font-weight: 700; }
 
     .paws {
       text-align: center;
@@ -330,15 +434,8 @@
       filter: brightness(1.03);
     }
 
-    .btn-calendar {
-      background: var(--green);
-      color: #fff;
-    }
-
-    .btn-close {
-      background: var(--gold);
-      color: #2b2b2b;
-    }
+    .btn-calendar { background: var(--green); color: #fff; }
+    .btn-close { background: var(--gold); color: #2b2b2b; }
 
     .paw-fx {
       position: fixed;
@@ -354,21 +451,20 @@
       100% { transform: translateY(-120px) scale(1.15); opacity: 0; }
     }
 
-    @media (max-width: 480px) {
-      .stack {
-        width: min(96vw, 430px);
+    @media (max-width: 560px) {
+      .stack { width: min(96vw, 430px); }
+      .hint { bottom: -46px; font-size: 12px; padding: 6px 12px; }
+
+      .wing {
+        width: 64px;
+        height: 88px;
+        top: 39%;
       }
 
-      .hint {
-        bottom: -46px;
-        font-size: 12px;
-        padding: 6px 12px;
-      }
+      .wing.left { left: -38px; }
+      .wing.right { right: -38px; }
 
-      .btn {
-        font-size: 14px;
-        padding: 8px 13px;
-      }
+      .btn { font-size: 14px; padding: 8px 13px; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -381,6 +477,13 @@
   </style>
 </head>
 <body>
+  <div class="clouds" aria-hidden="true">
+    <div class="cloud c1"></div>
+    <div class="cloud c2"></div>
+    <div class="cloud c3"></div>
+    <div class="cloud c4"></div>
+  </div>
+
   <main class="stage">
     <div class="stack">
       <div
@@ -391,6 +494,8 @@
         aria-expanded="false"
         aria-label="Открыть приглашение"
       >
+        <div class="wing left"></div>
+        <div class="wing right"></div>
         <div class="env-back"></div>
         <div class="env-flap"></div>
       </div>
@@ -467,14 +572,11 @@
 
       function fitLetterToScreen() {
         if (!letter.classList.contains("show")) return;
-
         letter.style.setProperty("--fit-scale", "1");
-        const viewportH = window.innerHeight;
-        const letterRect = letter.getBoundingClientRect();
 
-        /* Доступная высота в окне: оставляем немного воздуха */
-        const maxH = viewportH - 24;
-        const scale = Math.min(1, maxH / letterRect.height);
+        const maxH = window.innerHeight - 24;
+        const h = letter.getBoundingClientRect().height;
+        const scale = Math.min(1, maxH / h);
 
         letter.style.setProperty("--fit-scale", String(scale));
       }
@@ -496,7 +598,6 @@
       function setOpen(opened) {
         envelope.classList.toggle("open", opened);
         envelope.setAttribute("aria-expanded", String(opened));
-
         letter.classList.toggle("show", opened);
         hint.classList.toggle("hide", opened);
 
@@ -534,7 +635,6 @@
       }
 
       function downloadCalendar() {
-        // 27 апреля 2026, 18:30 (Ханты-Мансийск UTC+5)
         const start = new Date("2026-04-27T18:30:00+05:00");
         const end = new Date("2026-04-27T21:00:00+05:00");
 
